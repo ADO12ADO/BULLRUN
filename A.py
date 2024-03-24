@@ -1,36 +1,37 @@
 import requests
-from datetime import datetime
+import hashlib
+import hmac
+import time
 
-def get_crypto_prices(symbols, date):
-    api_key = 'dbe9d93e-6a86-47ff-87a4-2fd7d73fcfc4'  # Ganti dengan kunci API Anda
-    date_str = date.strftime('%Y%m%d')
-    url = f'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/historical?symbol={",".join(symbols)}&time_start={date_str}&time_end={date_str}&convert=USD'
+def get_server_time():
+    url = 'https://api.binance.com/api/v3/time'
+    response = requests.get(url)
+    return response.json()['serverTime']
+
+def generate_signature(data, secret_key):
+    return hmac.new(secret_key.encode('utf-8'), data.encode('utf-8'), hashlib.sha256).hexdigest()
+
+def get_crypto_price(symbol, timestamp, api_key, secret_key):
+    endpoint = f'https://api.binance.com/api/v3/klines?symbol={symbol}USDT&interval=1d&startTime={timestamp}&limit=1'
     headers = {
-        'Accepts': 'application/json',
-        'X-CMC_PRO_API_KEY': api_key,
+        'X-MBX-APIKEY': api_key,
     }
-    response = requests.get(url, headers=headers)
+    response = requests.get(endpoint, headers=headers)
     if response.status_code == 200:
         data = response.json()
-        if 'data' in data:
-            prices = {}
-            for symbol in symbols:
-                if symbol in data['data']:
-                    prices[symbol] = data['data'][symbol]['quote']['USD']['close']
-                else:
-                    prices[symbol] = f"Tidak dapat menemukan data harga untuk simbol {symbol} pada tanggal {date_str}"
-            return prices
+        if len(data) > 0:
+            price = float(data[0][4])  # Mengambil harga penutup
+            return price
         else:
-            return f"Tidak ada data kripto untuk tanggal {date_str}"
+            return f"Tidak dapat menemukan data harga untuk simbol {symbol}"
     else:
         return f"Permintaan gagal dengan kode status {response.status_code}"
 
 # Contoh penggunaan:
-symbols = ['BTC', 'BNB', 'SOL', 'ADA', 'DOT']  # Ganti dengan simbol kripto yang diinginkan
-tanggal = datetime(2020, 5, 11)  # Ganti dengan tanggal yang diinginkan
-harga_crypto = get_crypto_prices(symbols, tanggal)
-if isinstance(harga_crypto, dict):
-    for symbol, harga in harga_crypto.items():
-        print(f'Harga {symbol} pada tanggal {tanggal.strftime("%d %B %Y")}: ${harga}')
-else:
-    print(harga_crypto)
+symbols = ['BTC', 'BNB', 'ADA', 'DOT', 'SOL', 'XRP', 'DOGE', 'XLM']
+timestamp = get_server_time() - (86400000 * 30)  # Mendapatkan waktu server dan mengurangkan 30 hari (dalam milidetik)
+api_key = 'knkGeFTOXDxdUPQ783FvyuLKL6KcIBYHwIGaczIyDXvQSipzJToxKI9J7qLyttLT'  # Ganti dengan API key Binance Anda
+secret_key = 'pa04RmmpZZmI4u83EWbLMy8kguJLxEeQtcQjfJBIUKJIZ6SEjAMsAiBmblXaKzJe'  # Ganti dengan Secret key Binance Anda
+for symbol in symbols:
+    harga = get_crypto_price(symbol, timestamp, api_key, secret_key)
+    print(f'Harga {symbol} pada tanggal {time.strftime("%Y-%m-%d", time.gmtime(timestamp // 1000))}: ${harga}')
