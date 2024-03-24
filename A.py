@@ -31,7 +31,7 @@ def get_crypto_price(symbol, timestamps, api_key, secret_key):
     return prices
 
 # Contoh penggunaan:
-symbols = ['BTC', 'BNB', 'ADA', 'DOT', 'SOL', 'XRP', 'DOGE', 'XLM', 'ETH']
+symbols = ['BTC', 'BNB', 'ADA', 'DOT', 'SOL', 'XRP', 'DOGE', 'XLM', 'ETH', 'SUSHI', 'MEME', '1INCH', 'RUGZ']
 tanggal1 = '2020-05-11'
 tanggal2 = '2021-05-08'
 timestamps = [int(time.mktime(time.strptime(tanggal1, '%Y-%m-%d'))) * 1000, int(time.mktime(time.strptime(tanggal2, '%Y-%m-%d'))) * 1000]
