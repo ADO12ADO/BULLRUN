@@ -2,7 +2,7 @@ import requests
 from datetime import datetime
 
 def get_crypto_prices(symbols, date):
-    api_key = 'YOUR_API_KEY'  # Ganti dengan kunci API Anda
+    api_key = 'dbe9d93e-6a86-47ff-87a4-2fd7d73fcfc4'  # Ganti dengan kunci API Anda
     date_str = date.strftime('%Y-%m-%d')
     url = f'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/historical?symbol={",".join(symbols)}&time_start={date_str}&time_end={date_str}&convert=USD'
     headers = {
