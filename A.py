@@ -12,13 +12,16 @@ def get_crypto_prices(symbols, date):
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
         data = response.json()
-        prices = {}
-        for symbol in symbols:
-            if 'data' in data and symbol in data['data']:
-                prices[symbol] = data['data'][symbol]['quote']['USD']['close']
-            else:
-                prices[symbol] = f"Tidak dapat menemukan data harga untuk simbol {symbol} pada tanggal {date_str}"
-        return prices
+        if 'data' in data:
+            prices = {}
+            for symbol in symbols:
+                if symbol in data['data']:
+                    prices[symbol] = data['data'][symbol]['quote']['USD']['close']
+                else:
+                    prices[symbol] = f"Tidak dapat menemukan data harga untuk simbol {symbol} pada tanggal {date_str}"
+            return prices
+        else:
+            return f"Tidak ada data kripto untuk tanggal {date_str}"
     else:
         return f"Permintaan gagal dengan kode status {response.status_code}"
 
@@ -26,5 +29,8 @@ def get_crypto_prices(symbols, date):
 symbols = ['BTC', 'BNB', 'SOL', 'ADA', 'DOT']  # Ganti dengan simbol kripto yang diinginkan
 tanggal = datetime(2020, 5, 11)  # Ganti dengan tanggal yang diinginkan
 harga_crypto = get_crypto_prices(symbols, tanggal)
-for symbol, harga in harga_crypto.items():
-    print(f'Harga {symbol} pada tanggal {tanggal.strftime("%d %B %Y")}: ${harga}')
+if isinstance(harga_crypto, dict):
+    for symbol, harga in harga_crypto.items():
+        print(f'Harga {symbol} pada tanggal {tanggal.strftime("%d %B %Y")}: ${harga}')
+else:
+    print(harga_crypto)
