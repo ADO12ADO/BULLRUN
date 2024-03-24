@@ -40,6 +40,10 @@ secret_key = 'pa04RmmpZZmI4u83EWbLMy8kguJLxEeQtcQjfJBIUKJIZ6SEjAMsAiBmblXaKzJe' 
 
 for symbol in symbols:
     harga = get_crypto_price(symbol, timestamps, api_key, secret_key)
-    print(f'Harga {symbol}:')
-    for timestamp, price in harga.items():
-        print(f'- Tanggal {time.strftime("%Y-%m-%d", time.gmtime(timestamp // 1000))}: ${price}')
+    if all(isinstance(value, float) for value in harga.values()):
+        harga_tanggal1 = harga[timestamps[0]]
+        harga_tanggal2 = harga[timestamps[1]]
+        kenaikan = ((harga_tanggal2 - harga_tanggal1) / harga_tanggal1) * 100
+        print(f'Kenaikan harga {symbol} dari {tanggal1} ke {tanggal2}: {kenaikan:.2f}%')
+    else:
+        print(f'Kenaikan harga {symbol}: {harga[timestamps[0]]}')
