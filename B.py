@@ -49,7 +49,7 @@ def get_binance_portfolio(api_key, secret_key):
         print("Failed to retrieve account information. Status code:", response.status_code)
 
 # Masukkan API key dan secret key Anda di sini
-api_key = 'your_api_key'
-secret_key = 'your_secret_key'
+api_key = '5hvdHqzRx6qKsjXjTssRPxXgTkZjQB7OIilYN6ebqMuTecKoIJPQTxddRm0QhFyZ'
+secret_key = 'vA8aXQkWCkKJPzqplqZFJIcgwuTHBaUc0rAfOrAGnbuHR2AmmqQjFddNiMAn0AOS'
 
 get_binance_portfolio(api_key, secret_key)
