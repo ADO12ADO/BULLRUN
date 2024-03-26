@@ -35,8 +35,8 @@ symbols = ['BTC', 'ETH', 'XRP', 'LTC', 'BCH', 'BNB', 'EOS', 'XLM', 'ADA', 'TRX',
 tanggal1 = '2020-05-11'
 tanggal2 = '2021-05-08'
 timestamps = [int(time.mktime(time.strptime(tanggal1, '%Y-%m-%d'))) * 1000, int(time.mktime(time.strptime(tanggal2, '%Y-%m-%d'))) * 1000]
-api_key = 'knkGeFTOXDxdUPQ783FvyuLKL6KcIBYHwIGaczIyDXvQSipzJToxKI9J7qLyttLT'  # Ganti dengan API key Binance Anda
-secret_key = 'pa04RmmpZZmI4u83EWbLMy8kguJLxEeQtcQjfJBIUKJIZ6SEjAMsAiBmblXaKzJe'  # Ganti dengan Secret key Binance Anda
+api_key = '5hvdHqzRx6qKsjXjTssRPxXgTkZjQB7OIilYN6ebqMuTecKoIJPQTxddRm0QhFyZ'  # Ganti dengan API key Binance Anda
+secret_key = 'vA8aXQkWCkKJPzqplqZFJIcgwuTHBaUc0rAfOrAGnbuHR2AmmqQjFddNiMAn0AOS'  # Ganti dengan Secret key Binance Anda
 
 for symbol in symbols:
     harga = get_crypto_price(symbol, timestamps, api_key, secret_key)
